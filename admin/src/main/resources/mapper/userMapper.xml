@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.mapper.UserMapper">
+    <insert id="addUser"  parameterType="com.admin.entity.UserEntity">
+        INSERT INTO public."user" (ds_user,ds_account,ds_password)
+        VALUES (#{ds_user} , #{ds_account} , #{ds_password})
+    </insert>
+
+    <select id="getUsersByPage" resultType="com.admin.entity.UserEntity">
+        select * from public."user" order by cd_user asc
+    </select>
+
+    <delete id="deleteByPk" parameterType="long">
+        delete from public."user" where cd_user = #{recid}
+    </delete>
+
+    <update id="updateUser" parameterType="com.admin.entity.UserEntity">
+        update  public."user" set ds_user = #{ds_user} , ds_account = #{ds_account} , ds_password = #{ds_password} where cd_user = #{cd_user}
+    </update>
+
+    <!---->
+</mapper>
