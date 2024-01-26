@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.mapper.ArticleMapper">
+    <insert id="add"  parameterType="com.admin.entity.ArticleEntity">
+        INSERT INTO public."article" (ds_article,ds_content)
+        VALUES (#{ds_article} , #{ds_content})
+    </insert>
+
+    <select id="getUsersByPage" parameterType="java.util.Map" resultType="com.admin.entity.ArticleEntity">
+        select * from public."article" where 1 = 1
+        <if test="ds_article != null and ds_article != ''">
+            AND ds_article ILIKE CONCAT('%', #{ds_article}, '%')
+        </if>
+        <if test="ds_content != null and ds_content != ''">
+            AND ds_content ILIKE CONCAT('%', #{ds_content}, '%')
+        </if>
+          order by cd_article asc
+    </select>
+
+    <delete id="deleteByPk" parameterType="long">
+        delete from public."article" where cd_article = #{recid}
+    </delete>
+
+    <delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM public."article"
+        WHERE cd_article IN
+        <foreach item="id" collection="recids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.admin.entity.ArticleEntity">
+        update  public."article" set
+                                   ds_content = #{ds_content} ,
+                                  ds_content = #{ds_content} ,
+                              where cd_article = #{cd_article}
+    </update>
+
+    <!---->
+</mapper>

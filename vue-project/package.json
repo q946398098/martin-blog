@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.29.0",
     "axios": "^1.6.5",
     "element-plus": "^2.5.3",
     "jquery": "^3.7.1",

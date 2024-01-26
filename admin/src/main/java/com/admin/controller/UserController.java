@@ -69,7 +69,7 @@ public class UserController {
 //       ObjectMapper objectMapper = new ObjectMapper();
 //        UserEntity userentity =  objectMapper.readValue(s, UserEntity.class);
 //        System.out.println(userentity.getNr_age());
-//        PageHelper.startPage(pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<UserEntity> users = userMapper.getUsersByPage(where_map);
         return new PageInfo<>(users);
     }

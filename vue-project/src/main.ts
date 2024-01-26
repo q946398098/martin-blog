@@ -7,6 +7,8 @@ import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from './router'
 
+// 在 Vue 中全局注册 vue-quill-editor 组件
+
 const app = createApp(App)
 app.use(ElementPlus)
 app.use(createPinia())

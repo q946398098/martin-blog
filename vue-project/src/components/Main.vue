@@ -25,7 +25,9 @@
            <el-icon><location /></el-icon>
            <span>文章管理</span>
          </template>
-         <el-menu-item index="2-1">文章列表</el-menu-item>
+         <el-menu-item index="2-1">
+           <router-link to = '/article/edit'>文章管理</router-link>
+         </el-menu-item>
        </el-sub-menu>
 
        <el-sub-menu index="3">
