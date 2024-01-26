@@ -8,6 +8,7 @@ public class UserEntity {
     private String ds_user;
     private String ds_account;
     private String ds_password;
+    private int nr_age;
 }
 
 

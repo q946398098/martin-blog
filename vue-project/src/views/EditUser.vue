@@ -21,6 +21,10 @@
             <el-form-item label="Password:">
                     <el-input v-model="userForm.ds_password" />
             </el-form-item>
+          <el-form-item label="Age:">
+                    <el-input v-model="userForm.nr_age" />
+            </el-form-item>
+
         </el-form>
 
         <el-button @click="dialogVisible = false">Cancel</el-button>
@@ -35,16 +39,19 @@
     <div class="filter-title"></div>
     <el-form :inline="true" ref="form" :model="filter_form" label-width="80px">
           <el-form-item label="Age:" prop="age" >
-            <el-input  v-model.number="filter_form.age" type="text" placeholder="age" clearable></el-input>
+            <el-input  v-model.number="filter_form.nr_age" @input="handleFilterInput" type="text" placeholder="age" clearable></el-input>
           </el-form-item>
 
           <el-form-item label="Account" prop="account" >
-            <el-input v-model.number="filter_form.account" type="text" placeholder="account" clearable></el-input>
+            <el-input v-model="filter_form.ds_account"  @input="handleFilterInput" type="text" placeholder="account" clearable></el-input>
           </el-form-item>
 
-          <el-form-item>
-            <el-button type="primary" @click="onQuery">Query</el-button>
+          <el-form-item label="Name" prop="Name" >
+            <el-input v-model="filter_form.ds_user"  @input="handleFilterInput" type="text" placeholder="Name" clearable></el-input>
           </el-form-item>
+<!--          <el-form-item>-->
+<!--            <el-button type="primary" @click="onQuery">Query</el-button>-->
+<!--          </el-form-item>-->
 
     </el-form>
   </div>
@@ -77,7 +84,11 @@
            <span>{{ scope.row.ds_account }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="Age" width="180">
+        <template #default="scope">
+          <span style="margin-left: 10px">{{ scope.row.nr_age }}</span>
+        </template>
+      </el-table-column>
       <!-- 操作 -->
       <el-table-column label="Operations">
         <template #default="scope">
@@ -104,6 +115,7 @@
 
 import axios from 'axios';
 import {Plus,Delete} from '@element-plus/icons-vue';
+import {ElNotification } from 'element-plus'
 
 
 export default {
@@ -116,13 +128,15 @@ export default {
       delRecids: [],
       userForm:{
         cd_user:-1,
-        ds_password:this.createAccount(),
-        ds_user:this.createUserName(),
-        ds_account:this.createAccount(),
+        nr_age : 0,
+        ds_password:'',
+        ds_user:'',
+        ds_account:'',
       },
       filter_form:{
-        age:'',
-        account:''
+        nr_age:'',
+        ds_account:'',
+        ds_user:''
       },
       multipleSelection:[],
       tableHeight:'auto',
@@ -147,6 +161,9 @@ export default {
       }
       return accountNumber;
     },
+    handleFilterInput(){
+      this.fetchData();
+    },
     createUserName(){
       var surnames = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '楮', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许', '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章', '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗'];
       var names = ['伟', '芳', '娜', '强', '军', '洋', '霞', '磊', '勇', '艳', '杰', '婷', '超', '秀英', '亮', '露', '平', '刚', '丽', '明', '静', '华', '浩', '慧', '辉', '萍', '鹏', '英', '健', '美', '新', '华', '波', '莉', '凯', '萌', '宇', '志', '秀兰', '建华', '丹', '文', '福', '荣'];
@@ -166,16 +183,26 @@ export default {
             recids : this.delRecids
           }
        }).then(response => {
-        console.log(response.data);
-        // thisObj.fetchData();
+         if (response.data.code != 200){
+            ElNotification({
+             message: response.data.msg,
+             type: 'error',
+           })
+         }else{
+           ElNotification({
+             message: '删除成功',
+             type: 'success',
+           })
+         }
+        thisObj.fetchData();
        }).catch(error => {
             console.error(error);
        });
     },
     addUser(){
-
       this.userForm = {
         cd_user:-1,
+        nr_age: Math.floor(Math.random() * 100) + 1,
         ds_password:this.createAccount(),
         ds_user:this.createUserName(),
         ds_account:this.createAccount(),
@@ -183,17 +210,25 @@ export default {
       this.dialogVisible  = !this.dialogVisible;
       console.log('addUser')
     },
+
     addUserForm(){
       let thisObj = this;
       axios.post("http://localhost:8080/user/upsert",this.userForm).then(response => {
         // 请求成功的处理逻辑
         this.dialogVisible  = !this.dialogVisible;
-        thisObj.fetchData();
+        if (response.data.code == 200){
+          ElNotification({
+            type:'success',
+            message:response.data.msg
+          })
+          thisObj.fetchData();
+        }
       }).catch(error => {
         // 请求失败的处理逻辑
         console.error(error);
       });
     },
+
     handleSelectionChange(v) {
         this.delRecids = [];
         v.forEach((i,k)=>{
@@ -201,6 +236,7 @@ export default {
           console.log(i.cd_user,k);
         })
     },
+
     calTableHeight(){
       const screenHeight = window.innerHeight;
       console.log('屏幕高度：', screenHeight);
@@ -208,9 +244,12 @@ export default {
       // this.tableData = screenHeight;
       this.tableHeight = (screenHeight - 250);
     },
+
     onQuery(){
-      console.log('onQuery')
+      console.log(this.filter_form);
+      this.fetchData();
     },
+
     handleDelete(index , row) {
       let recid  = row.cd_user;
       console.log('recid',recid);
@@ -245,7 +284,9 @@ export default {
       let url = 'http://localhost:8080/user/getUsersByPage/'+ target_page+ '/' + this.pageSize;
       // 使用你自己的后台请求方法获取数据
       // 这里使用 axios 作为示例
-      axios.get(url)
+      axios.post(url,{
+        filter:thisObj.filter_form
+       })
           .then(response => {
             // 将获取到的数据赋值给 tableData
             thisObj.tableData = response.data.list;
