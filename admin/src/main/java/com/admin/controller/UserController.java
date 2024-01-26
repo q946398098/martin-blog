@@ -51,6 +51,7 @@ public class UserController {
         System.out.println(s instanceof Integer); // true
         System.out.println(s instanceof Boolean); // true
         System.out.println(s instanceof Integer); // false
+
         System.out.println(s instanceof String);  // false
         System.out.println(s instanceof List<?>); // false
 
