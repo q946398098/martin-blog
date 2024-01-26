@@ -15,10 +15,6 @@
               <el-menu-item index="1-1">
                 <router-link to = '/user/edit'>用戶列表</router-link>
               </el-menu-item>
-              <el-menu-item index="1-2">權限列表</el-menu-item>
-              <el-menu-item index="1-3">
-                <router-link to = '/about'>用戶權限表</router-link>
-              </el-menu-item>
           </el-sub-menu>
        <el-sub-menu index="2">
          <template #title>
