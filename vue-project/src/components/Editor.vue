@@ -1,31 +1,30 @@
+<script setup>
+import Editor from '@tinymce/tinymce-vue'
+</script>
+
 <template>
-  <div ref="editorContainer"></div>
+  <main id="sample">
+    <Editor
+        api-key="abcdefghijklmnopqrst1234567890"
+        :init="{
+        plugins: 'lists link image table code help wordcount'
+      }"
+    />
+  </main>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue';
-import EditorJS from '@editorjs/editorjs';
+<style scoped>
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
 
-export default {
-  name: 'MyEditor',
-  setup() {
-    const editorContainer = ref(null);
-    let editorInstance;
-
-    onMounted(() => {
-      console.log(4);
-      editorInstance = new EditorJS({
-        holder: editorContainer.value,
-        // 配置项：
-        // 可以配置工具栏、默认的块类型、插件等
-      });
-    });
-
-    // 使用 editorInstance 对象进行编辑器的操作，例如保存内容等
-
-    return {
-      editorContainer,
-    };
-  },
-};
-</script>
+@media (min-width: 1024px) {
+  #sample {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 1000px;
+  }
+}
+</style>

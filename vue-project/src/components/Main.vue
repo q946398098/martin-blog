@@ -31,7 +31,9 @@
            <el-icon><location /></el-icon>
            <span>評論管理</span>
          </template>
-         <el-menu-item index="3-1">評論列表</el-menu-item>
+         <el-menu-item index="3-1">
+           <router-link to = '/article/ceshi'>文章管理</router-link>
+         </el-menu-item>
        </el-sub-menu>
        </el-menu>
     </el-scrollbar>
