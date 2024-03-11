@@ -32,8 +32,8 @@
 
     <update id="update" parameterType="com.admin.entity.ArticleEntity">
         update  public."article" set
-                                   ds_content = #{ds_content} ,
-                                  ds_content = #{ds_content} ,
+                                  ds_article = #{ds_article} ,
+                                  ds_content = #{ds_content}
                               where cd_article = #{cd_article}
     </update>
 

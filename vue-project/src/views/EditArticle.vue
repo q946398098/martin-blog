@@ -1,6 +1,6 @@
 <template>
 
-  <el-dialog v-model="dialogVisible" title="Article" width="30%" draggable>
+  <el-dialog v-model="dialogVisible" title="Article" width="70%" draggable>
     <template #footer>
       <span class="dialog-footer">
         <el-form ref="form"
@@ -13,7 +13,7 @@
             </el-form-item>
 
             <el-form-item label="Content:">
-              <myEditor></myEditor>
+               <QuillEditor v-model="articleForm.ds_content" @input="updateContent" theme="snow" />
             </el-form-item>
 
         </el-form>
@@ -100,12 +100,9 @@ import axios from 'axios';
 import {Plus,Delete} from '@element-plus/icons-vue';
 import {ElNotification } from 'element-plus'
 import {ref} from "vue";
-import myEditor from '../components/Editor.vue';
+import Editor  from '../components/Editor.vue';
 
 export default {
-  components: {
-    myEditor
-  },
   data() {
     return {
       tableData: [],
@@ -144,6 +141,10 @@ export default {
         accountNumber += Math.floor(Math.random() * 10);
       }
       return accountNumber;
+    },
+    updateContent(val){
+      console.log(val);
+      this.articleForm.ds_content = val;
     },
     handleFilterInput(){
       this.fetchData();
